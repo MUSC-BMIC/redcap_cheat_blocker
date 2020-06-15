@@ -1,0 +1,40 @@
+#external-modules-configure-modal tr[field="criteria_name_setting"] {
+  background-color: #e6e6e6;
+}
+
+#external-modules-configure-modal .external-modules-instance-label {
+  display: none;
+}
+
+/* To show the number ONLY next to Criteria header */
+#external-modules-configure-modal tr[field="criteria_setting"] .external-modules-instance-label {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+#external-modules-configure-modal tr[field="criteria_setting"] label {
+  font-size: 20px;
+  font-weight: bolder;
+}
+/* Move Criteria header to left by hiding empty td */
+#external-modules-configure-modal tr[field="criteria_setting"] > td:nth-child(2) {
+  display:block;
+  margin-left: -185px;
+}
+
+#external-modules-configure-modal tr[field="criteria_setting"] > td:nth-child(3) {
+  text-align: right;
+}
+
+#external-modules-configure-modal tr.sub_parent td.external-modules-add-remove-column button {
+    width: 140px;
+}
+
+#external-modules-configure-modal tr.sub_child td.external-modules-add-remove-column button {
+    width: 175px;
+}
+
+a.dropdown-item:hover {
+  font-size: 1rem;
+}
