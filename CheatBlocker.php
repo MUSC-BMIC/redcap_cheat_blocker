@@ -13,11 +13,15 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
       // Get all field variable names in project
       // Get the data dictionary for the current project in array format
+      $allowable_field_types = array('dropdown', 'radio', 'text', 'calc');
+
       $filtered_dd_array = array();
       $dd_array = REDCap::getDataDictionary('array');
 
       foreach ($dd_array as $field_name => $field_attributes) {
-        array_push($filtered_dd_array, $field_name);
+        if (in_array($field_attributes['field_type'], $allowable_field_types)) {
+          array_push($filtered_dd_array, $field_name);
+        }
       }
 
       $this->setJsSettings('cheatBlockerFields', $dd_array);
@@ -89,11 +93,11 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     $is_duplicate = $params['duplicate_check']['value'];
     $total_data_count = 0;
 
-    //If automatic duplicate check is not set, new records will show eligibility message
-    //After the admin sets the duplicate_check variable, it will be set and accepted/rejected message shows up
+    // If automatic duplicate check is not set, new records will show eligibility message
+    // After the admin sets the duplicate_check variable, it will be set and accepted/rejected message shows up
     if($automatic_duplicate_check == false){
       if($is_duplicate == ''){
-        return array(is_duplicate => false, eligibility_message => true);
+        return array(is_duplicate => '', eligibility_message => true);
       }
       else{
         return array(is_duplicate => (int)$is_duplicate);
@@ -104,29 +108,59 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
       $is_duplicate = false;
     }
 
-    for($i = 0; $i < count($criteria_names); $i++) {
-      $filter_logic = '';
-      for($j = 0; $j < count($criteria_names[$i]); $j++){
-        $name = $criteria_names[$i][$j];
-        $filter_logic .= "[$name] = '$params[$name]'";
-        $filter_logic .= ($j == count($criteria_names[$i]) - 1) ? "" : " AND ";
-      }
-      $total_data_count = $this->dataCount($filter_logic);
+    $is_duplicate = $this->duplicate_check_by_iteration($params, $criteria_names);
 
-      if ($total_data_count > 0){
-        $is_duplicate = true;
-        error_log("FAILED". $filter_logic);
-        break;
-      }
-    }
-
-    return array(is_duplicate => $is_duplicate);
+    return array(is_duplicate => (int)$is_duplicate);
   }
 
-  protected function dataCount($filter_logic) {
-    $params = array('return_format' => 'array', 'filterLogic' => $filter_logic, 'fields' => array('record_id'));
-    $data = REDCap::getData($params);
-    return count($data);
+  // protected function dataCount($filter_logic) {
+  //   $params = array('return_format' => 'array', 'filterLogic' => $filter_logic, 'fields' => array('record_id'));
+  //   $data = REDCap::getData($params);
+  //   return count($data);
+  // }
+
+
+  protected function duplicate_check_by_iteration($params, $criteria_names){
+
+    // Get all the existing records via getData method
+    // Iterate each record and check each criteria
+    // For each record and for each criteria, if the field name of the new record that comes in matches
+    // add yes to duplicate array
+    // Finally check the duplicate array
+    // Atleast 1 false in duplicate array indicates that the record is NOT a duplicate
+
+    $data = REDCap::getData('array', null, $criteria_names);
+
+    foreach ($data as $field => $value) {
+      $event_id = $params['event_id'];
+      for($i = 0; $i < count($criteria_names); $i++) {
+        $duplicate_array = array();
+        for($j = 0; $j < count($criteria_names[$i]); $j++){
+          $criteria = $criteria_names[$i][$j];
+          $existing_record = $value[$event_id][$criteria];
+          $new_record = $params[$criteria];
+
+          //Remove all special characters from phone number fields
+          if($criteria == 'telephone'){
+            $existing_record = preg_replace('/(\W*)/', '', $existing_record);
+            $new_record = preg_replace('/(\W*)/', '', $new_record);
+          }
+          //Case sensitive check for text fields
+          if(strtolower($existing_record) == strtolower($new_record)){
+            array_push($duplicate_array, true);
+          }
+          else{
+            array_push($duplicate_array, false);
+          }
+        }
+
+        // If the duplicate array has all true values, then the new record is a duplicate
+        if (in_array(false, $duplicate_array) == false){
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   protected function setJsSettings($var, $settings) {

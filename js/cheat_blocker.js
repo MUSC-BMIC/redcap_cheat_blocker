@@ -18,7 +18,6 @@ $(document).ready(function () {
     });
 
     $modal.on('show.bs.modal', function () {
-
       // Making sure we are overriding this modules's modal only.
       if ($(this).data('module') !== cheatBlockerSettings.modulePrefix) {
           return;
@@ -66,7 +65,7 @@ $(document).ready(function () {
           oldInput = inputTd.find("input, select, textarea");
 
           // dropdowns and radio buttons
-          if (['dropdown', 'radio'].indexOf(cheatBlockerFields[selectedVal].field_type) != -1) {
+          if (['dropdown', 'radio', 'text', 'calc'].indexOf(cheatBlockerFields[selectedVal].field_type) != -1) {
             options = cheatBlockerFields[selectedVal].select_choices_or_calculations.split("|");
             newSelect = '<select class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
 

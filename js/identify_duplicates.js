@@ -21,6 +21,8 @@ setTimeout(function() {
           console.log(is_duplicate);
           console.log(eligibility_message);
 
+          $("#duplicate_check-tr .data :input").val(is_duplicate);
+
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
