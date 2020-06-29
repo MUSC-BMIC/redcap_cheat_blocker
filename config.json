@@ -1,0 +1,91 @@
+{
+ "name": "CheatBlocker",
+ "namespace": "MUSC\\CheatBlocker",
+ "description": "This is a description of the module, and will be displayed below the module name in the user interface.",
+ "authors": [
+     {
+          "name": "Andrew Cates",
+          "email": "catesa@musc.edu",
+          "institution": "Medical University of South Carolina"
+      },
+      {
+          "name": "Sherly Roy Yesudhas",
+          "email": "royyesud@musc.edu",
+          "institution": "Medical University of South Carolina"
+      },
+      {
+          "name": "Johanna McGann",
+          "email": "wiel@musc.edu",
+          "institution": "Medical University of South Carolina"
+      }
+  ],
+  "no-auth-pages": ["identify_duplicates"],
+  "permissions": [
+    "redcap_every_page_top",
+    "redcap_data_entry_form_top",
+    "redcap_survey_page_top"
+  ],
+  "project-settings": [
+    {
+       "key": "modal_title",
+       "name": "Popup title",
+       "type": "text",
+       "required": true,
+       "default": "Eligibility"
+    },
+    {
+       "key": "accepted",
+       "name": "Acceptance Message",
+       "type": "textarea",
+       "required": true,
+       "default": "Accepted into Project"
+    },
+    {
+       "key": "rejected",
+       "name": "Rejection Message",
+       "type": "textarea",
+       "required": true,
+       "default": "Project is full at this time."
+    },
+    {
+      "key": "eligibility_message",
+      "name": "Eligibility message",
+      "type": "textarea",
+      "required": true,
+      "default": "You may be eligible for this study. You will be contacted by an administrator."
+    },
+    {
+      "key": "automatic_duplicate_check",
+      "name": "Automatic Duplicate Check",
+      "type": "checkbox",
+      "required": true,
+      "default": "Yes"
+    },
+    {
+     "key": "criteria_setting",
+     "name": "Criteria",
+     "required": true,
+     "type": "sub_settings",
+     "repeatable":true,
+     "sub_settings":[
+      {
+       "key": "criteria_name_setting",
+       "name": "Field Name",
+       "required": true,
+       "type": "sub_settings",
+       "repeatable":true,
+       "sub_settings":[
+         {
+          "key": "criteria_name",
+          "name": "Name",
+          "required": true,
+          "type": "field-list"
+         }
+       ]
+      }
+     ]
+    }
+
+  ]
+
+}
