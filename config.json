@@ -55,6 +55,13 @@
       "default": "You may be eligible for this study. You will be contacted by an administrator."
     },
     {
+      "key": "potential_duplicate_message",
+      "name": "Potential duplicate message",
+      "type": "textarea",
+      "required": true,
+      "default": "This record might be a potential duplicate, please verify before you edit this record."
+    },
+    {
       "key": "automatic_duplicate_check",
       "name": "Automatic Duplicate Check",
       "type": "checkbox",
@@ -62,28 +69,51 @@
       "default": "Yes"
     },
     {
-     "key": "criteria_setting",
-     "name": "Criteria",
-     "required": true,
-     "type": "sub_settings",
-     "repeatable":true,
-     "sub_settings":[
-      {
-       "key": "criteria_name_setting",
-       "name": "Field Name",
-       "required": true,
-       "type": "sub_settings",
-       "repeatable":true,
-       "sub_settings":[
-         {
-          "key": "criteria_name",
-          "name": "Name",
-          "required": true,
-          "type": "field-list"
-         }
-       ]
-      }
-     ]
+      "key": "compare_dates_number",
+      "name": "Compare Dates By",
+      "type": "text",
+      "required": true,
+      "default": "6"
+    },
+    {
+      "key": "time_period",
+      "name": "Time Period",
+      "type": "dropdown",
+      "required": true,
+      "choices": [
+        {
+          "value": "days",
+          "name": "Days"
+        },
+        {
+          "value": "weeks",
+          "name": "Weeks"
+        },
+        {
+          "value": "months",
+          "name": "Months"
+        },
+        {
+          "value": "years",
+          "name": "Years"
+        }
+      ]
+    },
+    {
+      "key": "criteria_setting",
+      "name": "Criteria",
+      "required": true,
+      "type": "sub_settings",
+      "repeatable": true,
+      "sub_settings":[
+       {
+        "key": "criteria_name",
+        "name": "Field",
+        "required": true,
+        "type": "field-list",
+        "repeatable": true
+       }
+      ]
     }
 
   ]
