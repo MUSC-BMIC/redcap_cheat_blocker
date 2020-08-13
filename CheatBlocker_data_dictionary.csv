@@ -17,4 +17,6 @@ comments,demographics,General Comments,notes,Comments,,,,,,,,,,,,,
 duplicate_check,demographics,,yesno,Duplicate Check,,,,,,,,,,,,, @hidden-survey
 failed_criteria,demographics,,text,Failed Criteria,,,,,,,,,,,,, @hidden-survey
 duplicate_record_ids,demographics,,text,Duplicate Record IDs,,,,,,,,,,,,, @hidden-survey
+pot_duplicate_record_ids,demographics,,text,Potential Duplicate Record IDs,,,,,,,,,,,,, @hidden-survey
+duplicates_count,demographics,,text,Duplicates Count,,,,,,,,,,,,, @hidden-survey
 data_entry_time,demographics,,text,Data Entry Time,,,,,,,,,,,,, @hidden-survey

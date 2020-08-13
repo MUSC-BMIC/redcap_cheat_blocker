@@ -71,15 +71,12 @@
     {
       "key": "compare_dates_number",
       "name": "Compare Dates By",
-      "type": "text",
-      "required": true,
-      "default": "6"
+      "type": "text"
     },
     {
       "key": "time_period",
       "name": "Time Period",
       "type": "dropdown",
-      "required": true,
       "choices": [
         {
           "value": "days",

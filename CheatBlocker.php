@@ -106,14 +106,14 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     // If the admin marks as not a duplicate but if the record is a potential duplicate, potential duplicate message should appear
     if($automatic_duplicate_check == false){
       if($is_duplicate == 0 && $duplicate_array["is_duplicate"] == 1){
-        return array(is_duplicate => 0, automatic_duplicate_check => false, potential_duplicate_message => true);
+        return array(is_duplicate => 0, automatic_duplicate_check => false, potential_duplicate_message => true, potential_duplicate_record_ids => $duplicate_array["duplicate_record_ids"]);
       }
       else{
-        return array(is_duplicate => (int)$is_duplicate, automatic_duplicate_check => false, failed_criteria => $duplicate_array["failed_criteria"], duplicate_record_ids => $duplicate_array["duplicate_record_ids"]);
+        return array(is_duplicate => (int)$is_duplicate, automatic_duplicate_check => false, failed_criteria => $duplicate_array["failed_criteria"], duplicates_count => $duplicate_array["duplicates_count"], duplicate_record_ids => $duplicate_array["duplicate_record_ids"]);
       }
     }
 
-    return array(is_duplicate => $duplicate_array["is_duplicate"], failed_criteria => $duplicate_array["failed_criteria"], duplicate_record_ids => $duplicate_array["duplicate_record_ids"], data_entry_time => $duplicate_array["data_entry_time"]);
+    return array(is_duplicate => $duplicate_array["is_duplicate"], failed_criteria => $duplicate_array["failed_criteria"], duplicates_count => $duplicate_array["duplicates_count"], duplicate_record_ids => $duplicate_array["duplicate_record_ids"], data_entry_time => $duplicate_array["data_entry_time"]);
   }
 
   protected function duplicate_check_by_iteration($params, $criteria_names){
@@ -135,6 +135,7 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
     $current_record_data_entry_time = date('m/d/Y H:i:s', $_SERVER['REQUEST_TIME']);
     $comparison_days = $this->get_days_from_config_file();
+    $duplicates_count = 0;
 
     //Looping through each record even though there is a duplicate
     //Doesn't stop when a duplicate is detected
@@ -186,6 +187,7 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
       //For each record that is a duplicate, get the failed criteria & add to the duplicated_record_ids
       if($is_duplicate){
+        $duplicates_count += 1;
         $failed_criteria_exists = $failed_criteria;
         $duplicate_record_ids .= empty($duplicate_record_ids) ? $field : ", " . $field;
       }
@@ -193,7 +195,7 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     }
 
     if($duplicate_exists){
-      return array(is_duplicate => (int)$duplicate_exists, failed_criteria => $failed_criteria_exists, duplicate_record_ids => $duplicate_record_ids, data_entry_time => $current_record_data_entry_time);
+      return array(is_duplicate => (int)$duplicate_exists, failed_criteria => $failed_criteria_exists, duplicates_count => $duplicates_count, duplicate_record_ids => $duplicate_record_ids, data_entry_time => $current_record_data_entry_time);
     }
 
     return array(is_duplicate => 0, data_entry_time => $current_record_data_entry_time);
@@ -203,6 +205,10 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     $config = $this->getProjectSettings();
     $compare_dates_number = $config['compare_dates_number']['value'];
     $time_period = $config['time_period']['value'];
+
+    if(is_null($compare_dates_number) || is_null($time_period)){
+      return 100 * 365; //100 years which is a random number
+    }
 
     switch ($time_period) {
       case 'days':
