@@ -1,7 +1,3 @@
-#external-modules-configure-modal tr[field="criteria_name_setting"] {
-  background-color: #e6e6e6;
-}
-
 #external-modules-configure-modal .external-modules-instance-label {
   display: none;
 }
@@ -29,10 +25,6 @@
 
 #external-modules-configure-modal tr.sub_parent td.external-modules-add-remove-column button {
     width: 140px;
-}
-
-#external-modules-configure-modal tr.sub_child td.external-modules-add-remove-column button {
-    width: 175px;
 }
 
 a.dropdown-item:hover {

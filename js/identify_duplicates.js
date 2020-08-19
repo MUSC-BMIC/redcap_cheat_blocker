@@ -12,16 +12,37 @@ setTimeout(function() {
         success: function(data) {
           data = JSON.parse(data);
           is_duplicate = data.is_duplicate;
-          eligibility_message = data.eligibility_message;
+          automatic_duplicate_check = data.automatic_duplicate_check;
+          eligibility_message = data.cheat_eligibility_message;
+          potential_duplicate_message = data.potential_duplicate_message;
+          failed_criteria = data.failed_criteria;
+          duplicates_count = data.duplicates_count;
+          duplicate_record_ids = data.duplicate_record_ids;
+          potential_duplicate_record_ids = data.potential_duplicate_record_ids;
+          data_entry_time = data.data_entry_time;
 
-          $message = eligibility_message ? cheatBlockerSettings['eligibility_message'] : is_duplicate ? cheatBlockerSettings['rejected'] : cheatBlockerSettings['accepted'];
+          console.log(data);
+
+          if(automatic_duplicate_check == false){
+            $message = eligibility_message ? cheatBlockerSettings['eligibility_message'] : potential_duplicate_message ? cheatBlockerSettings['potential_duplicate_message'] : is_duplicate ? cheatBlockerSettings['rejected'] : cheatBlockerSettings['accepted'];
+          }
+          else{
+            $message = is_duplicate ? cheatBlockerSettings['rejected'] : cheatBlockerSettings['accepted'];
+          }
+
           $("#cheat-blocker-modal .modal-body").html($message);
           $('#cheat-blocker-modal').modal('show');
 
-          console.log(is_duplicate);
-          console.log(eligibility_message);
 
           $("#duplicate_check-tr .data :input").val(is_duplicate);
+          $("#failed_criteria-tr .data :input").val(failed_criteria);
+          $("#duplicates_count-tr .data :input").val(duplicates_count);
+          $("#duplicate_record_ids-tr .data :input").val(duplicate_record_ids);
+          $("#pot_duplicate_record_ids-tr .data :input").val(potential_duplicate_record_ids);
+          if(data_entry_time){
+            $("#data_entry_time-tr .data :input").val(data_entry_time);
+          }
+
 
           e.preventDefault();
           e.stopPropagation();
@@ -43,4 +64,3 @@ setTimeout(function() {
     });
   });
 }, 0);
-

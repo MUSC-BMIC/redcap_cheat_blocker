@@ -11,13 +11,11 @@ $(document).ready(function () {
       if ($target.is('tr.sub_start.sub_parent')) {
           $target.find(".external-modules-add-instance").text('Add Criteria');
           $target.find(".external-modules-remove-instance").text('Remove Criteria');
-      } else if ($target.is('tr.sub_start.sub_child')) {
-          $target.find(".external-modules-add-instance").text('Add Nested Criteria');
-          $target.find(".external-modules-remove-instance").text('Remove Nested Criteria');
       }
     });
 
     $modal.on('show.bs.modal', function () {
+
       // Making sure we are overriding this modules's modal only.
       if ($(this).data('module') !== cheatBlockerSettings.modulePrefix) {
           return;
@@ -25,9 +23,6 @@ $(document).ready(function () {
 
       $(document).ajaxComplete(function () {
         $modal.find("select[name*='criteria_name']").each(function () {
-          cheatBlockerSettings.useOldVal = "true"
-          $(this).trigger('change');
-          cheatBlockerSettings.useOldVal = "false"
           cleanupFieldNameSelect();
         });
 
@@ -58,44 +53,12 @@ $(document).ready(function () {
       });
 
       $(document).on('change', "select[name*='criteria_name']", function () {
-        selectedVal = $(this).val();
-        if (cheatBlockerFields.hasOwnProperty(selectedVal)) {
 
-          inputTd = $(this).closest("tr").next("tr").find("td.external-modules-input-td")
-          oldInput = inputTd.find("input, select, textarea");
+        $modal.find("select").each(function () {
+          $(this).attr('data-live-search', true);
+          $(this).selectpicker();
+        });
 
-          // dropdowns and radio buttons
-          if (['dropdown', 'radio', 'text', 'calc'].indexOf(cheatBlockerFields[selectedVal].field_type) != -1) {
-            options = cheatBlockerFields[selectedVal].select_choices_or_calculations.split("|");
-            newSelect = '<select class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
-
-            $.each(options, function (index, value) {
-                option = value.trim().split(", ");
-
-                if (cheatBlockerSettings.useOldVal == 'true' && oldInput.val() == option[0]) {
-                    newSelect += '<option value=' + option[0] + ' selected=selected>' + option[1] + '</option>';
-                }
-                else {
-                    newSelect += '<option value=' + option[0] + '>' + option[1] + '</option>';
-                }
-
-            });
-
-            newSelect += '</select>';
-
-            if (oldInput.is('select')) {
-                oldInput.selectpicker('destroy');
-            }
-
-            oldInput.replaceWith(newSelect);
-
-            $modal.find("select").each(function () {
-              $(this).attr('data-live-search', true);
-              $(this).selectpicker();
-            });
-          }
-
-        }
       });
 
     });
