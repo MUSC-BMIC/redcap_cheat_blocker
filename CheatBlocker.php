@@ -18,8 +18,9 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
       $filtered_dd_array = array();
       $dd_array = REDCap::getDataDictionary('array');
 
+      //also exclude hidden fields from the dropdown list
       foreach ($dd_array as $field_name => $field_attributes) {
-        if (in_array($field_attributes['field_type'], $allowable_field_types)) {
+        if (in_array($field_attributes['field_type'], $allowable_field_types) && trim($field_attributes['field_annotation']) != '@HIDDEN-SURVEY') {
           array_push($filtered_dd_array, $field_name);
         }
       }

@@ -1,7 +1,7 @@
 {
  "name": "CheatBlocker",
  "namespace": "MUSC\\CheatBlocker",
- "description": "This is a description of the module, and will be displayed below the module name in the user interface.",
+ "description": "This module is applied at the point of study screening to flag a record as a duplicate, that the participant is automatically told that they are ineligible for the study. ",
  "authors": [
      {
           "name": "Andrew Cates",
@@ -25,6 +25,15 @@
     "redcap_data_entry_form_top",
     "redcap_survey_page_top"
   ],
+  "links": {
+    "project": [
+      {
+        "name": "Cheat Blocker Data Dictionary",
+        "icon": "report",
+        "url": "CheatBlocker_data_dictionary.csv"
+      }
+    ]
+  },
   "project-settings": [
     {
        "key": "modal_title",
