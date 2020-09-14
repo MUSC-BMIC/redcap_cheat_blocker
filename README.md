@@ -63,7 +63,7 @@ All the variables have to be manually created by navigating to the Designer Page
 The Data Dictionary is a more advanced method which allows to view/edit all the variables in a single csv file.
 Navigate to Data Dictionary and upload the data dictionary in the link shown below.
 
-[Data Dictionary link](/CheatBlocker_data_dictionary.csv)
+[Data Dictionary link](https://github.com/HSSC/redcap_cheat_blocker/blob/master/CheatBlocker_data_dictionary.csv)
 
 Upload the data dictionary and then commit changes after it is uploaded. The new Data Dictionary will completely overwrite your existing variables, so you want to be sure you've uploaded the right file.
 
@@ -71,7 +71,7 @@ Upload the data dictionary and then commit changes after it is uploaded. The new
 
 If both Quota Config & Cheat Blocker modules are enabled, upload the combined data dictionary in the link shown below
 
-[Data Dictionary link](https://github.com/HSSC/redcap_cheat_blocker/blob/master/QuotaConfig_CheatBlocker_data_dictionary.csv)
+[Data Dictionary link](https://github.com/HSSC/redcap_quotas/blob/master/QuotaConfig_CheatBlocker_data_dictionary.csv)
 
 
 

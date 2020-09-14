@@ -15,23 +15,14 @@ $(document).ready(function () {
     });
 
     $modal.on('show.bs.modal', function () {
-
       // Making sure we are overriding this modules's modal only.
       if ($(this).data('module') !== cheatBlockerSettings.modulePrefix) {
           return;
       }
 
-      $(document).ajaxComplete(function () {
-        $modal.find("select[name*='criteria_name']").each(function () {
-          cleanupFieldNameSelect();
-        });
+      $(document).on('ajaxComplete', cheat_populate_dropdown);
+      $(document).on('click', ".external-modules-add-instance", cheat_populate_dropdown);
 
-        $modal.find("select").each(function () {
-          $(this).attr('data-live-search', true);
-          $(this).selectpicker();
-        });
-
-      });
 
       /* Need to clear out the placeholder value that's assigned in the
        * 'rendered.bs.select hidden.bs.select' event handler so that the
@@ -61,20 +52,36 @@ $(document).ready(function () {
 
       });
 
+
+
     });
+
+    function cheat_populate_dropdown(){
+      $modal.find("select[name*='criteria_name']").each(function () {
+        cheat_cleanupFieldNameSelect();
+      });
+
+      $modal.find("select").each(function () {
+        $(this).attr('data-live-search', true);
+        $(this).selectpicker();
+      });
+    }
+
 
   });
 
-function cleanupFieldNameSelect() {
+
+
+function cheat_cleanupFieldNameSelect() {
     // clean up the dropdown so that only fields that should be used for duplicates are shown
-    selector = "select[name*='criteria_name'] option"
+    selector = "select[name*='criteria_name'] option";
     $.each($(selector), function () {
         if (cheatBlockerValidFieldNameOptions.indexOf($(this).val()) == -1) {
             $(this).remove();
         }
     });
 
-    setTimeout(cleanupFieldNameSelect, 100);
+    setTimeout(cheat_cleanupFieldNameSelect, 100);
 }
 
 

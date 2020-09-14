@@ -18,8 +18,9 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
       $filtered_dd_array = array();
       $dd_array = REDCap::getDataDictionary('array');
 
+      //also exclude hidden fields from the dropdown list
       foreach ($dd_array as $field_name => $field_attributes) {
-        if (in_array($field_attributes['field_type'], $allowable_field_types)) {
+        if (in_array($field_attributes['field_type'], $allowable_field_types) && trim($field_attributes['field_annotation']) != '@HIDDEN-SURVEY') {
           array_push($filtered_dd_array, $field_name);
         }
       }
@@ -27,9 +28,15 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
       $this->setJsSettings('cheatBlockerFields', $dd_array);
       $this->setJsSettings('cheatBlockerValidFieldNameOptions', $filtered_dd_array);
       $this->includeJs('js/cheat_blocker.js');
-      $this->includeJs('js/bootstrap-select.min.js');
       $this->includeCss('css/config.css');
-      $this->includeCss('css/bootstrap-select.min.css');
+
+      //render the JS file only if quota_config is not enabled
+      $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
+      if (!isset($enabledModules['quota_config'])){
+        $this->includeJs('js/bootstrap-select.min.js');
+        $this->includeCss('css/bootstrap-select.min.css');
+      }
+
     }
   }
 
