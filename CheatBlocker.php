@@ -28,9 +28,15 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
       $this->setJsSettings('cheatBlockerFields', $dd_array);
       $this->setJsSettings('cheatBlockerValidFieldNameOptions', $filtered_dd_array);
       $this->includeJs('js/cheat_blocker.js');
-      $this->includeJs('js/bootstrap-select.min.js');
       $this->includeCss('css/config.css');
-      $this->includeCss('css/bootstrap-select.min.css');
+
+      //render the JS file only if quota_config is not enabled
+      $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
+      if (!isset($enabledModules['quota_config'])){
+        $this->includeJs('js/bootstrap-select.min.js');
+        $this->includeCss('css/bootstrap-select.min.css');
+      }
+
     }
   }
 
