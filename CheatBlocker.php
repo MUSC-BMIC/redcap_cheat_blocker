@@ -98,26 +98,29 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     $is_duplicate = $params['duplicate_check']['value'];
     $current_record_data_entry_time = date('m/d/Y H:i:s', $_SERVER['REQUEST_TIME']);
 
-    // If automatic duplicate check is not set, new records will show eligibility message
-    if($automatic_duplicate_check == false && $is_duplicate == ''){
-      return array(is_duplicate => '', automatic_duplicate_check => false, cheat_eligibility_message => true, data_entry_time => $current_record_data_entry_time);
-    }
-
-    if($automatic_duplicate_check == true && $is_duplicate == ''){
-      $is_duplicate = false;
-    }
 
     $duplicate_array = $this->duplicate_check_by_iteration($params, $criteria_names);
 
-    // If the automatic duplicate check is not set, the admin goes in and sets the variable
-    // If the admin marks as not a duplicate but if the record is a potential duplicate, potential duplicate message should appear
+    //Different scenarios if automatic duplicate check is not set
+
     if($automatic_duplicate_check == false){
+        //Show eligibility message when a new record comes in
+        //Update Potential Duplicate Record IDs and Potential Failed Criteria fields if its a duplicate
+      if($is_duplicate == ''){
+        return array(is_duplicate => '', automatic_duplicate_check => false, cheat_eligibility_message => true, data_entry_time => $current_record_data_entry_time,
+                    potential_duplicate_record_ids => $duplicate_array["duplicate_record_ids"], potential_failed_criteria => $duplicate_array["failed_criteria"]);
+      }
+
+      //If the admin marks as not a duplicate, but if the record is a potential duplicate, potential duplicate message shows up
       if($is_duplicate == 0 && $duplicate_array["is_duplicate"] == 1){
-        return array(is_duplicate => 0, automatic_duplicate_check => false, potential_duplicate_message => true, potential_duplicate_record_ids => $duplicate_array["duplicate_record_ids"]);
+        return array(is_duplicate => 0, automatic_duplicate_check => false, potential_duplicate_message => true,
+                    potential_duplicate_record_ids => $duplicate_array["duplicate_record_ids"], potential_failed_criteria => $duplicate_array["failed_criteria"]);
       }
       else{
-        return array(is_duplicate => (int)$is_duplicate, automatic_duplicate_check => false, failed_criteria => $duplicate_array["failed_criteria"], duplicates_count => $duplicate_array["duplicates_count"], duplicate_record_ids => $duplicate_array["duplicate_record_ids"]);
+        return array(is_duplicate => (int)$is_duplicate, automatic_duplicate_check => false, duplicate_record_ids => $duplicate_array["duplicate_record_ids"],
+                    failed_criteria => $duplicate_array["failed_criteria"], duplicates_count => $duplicate_array["duplicates_count"]);
       }
+
     }
 
     return array(is_duplicate => $duplicate_array["is_duplicate"], failed_criteria => $duplicate_array["failed_criteria"], duplicates_count => $duplicate_array["duplicates_count"], duplicate_record_ids => $duplicate_array["duplicate_record_ids"], data_entry_time => $duplicate_array["data_entry_time"]);

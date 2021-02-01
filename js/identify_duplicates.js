@@ -15,10 +15,11 @@ setTimeout(function() {
           automatic_duplicate_check = data.automatic_duplicate_check;
           eligibility_message = data.cheat_eligibility_message;
           potential_duplicate_message = data.potential_duplicate_message;
+          potential_duplicate_record_ids = data.potential_duplicate_record_ids;
+          potential_failed_criteria = data.potential_failed_criteria;
+          duplicate_record_ids = data.duplicate_record_ids;
           failed_criteria = data.failed_criteria;
           duplicates_count = data.duplicates_count;
-          duplicate_record_ids = data.duplicate_record_ids;
-          potential_duplicate_record_ids = data.potential_duplicate_record_ids;
           data_entry_time = data.data_entry_time;
 
           console.log(data);
@@ -35,10 +36,11 @@ setTimeout(function() {
 
 
           $("#duplicate_check-tr .data :input").val(is_duplicate);
+          $("#pot_duplicate_record_ids-tr .data :input").val(potential_duplicate_record_ids);
+          $("#potential_failed_criteria-tr .data :input").val(potential_failed_criteria);
+          $("#duplicate_record_ids-tr .data :input").val(duplicate_record_ids);
           $("#failed_criteria-tr .data :input").val(failed_criteria);
           $("#duplicates_count-tr .data :input").val(duplicates_count);
-          $("#duplicate_record_ids-tr .data :input").val(duplicate_record_ids);
-          $("#pot_duplicate_record_ids-tr .data :input").val(potential_duplicate_record_ids);
           if(data_entry_time){
             $("#data_entry_time-tr .data :input").val(data_entry_time);
           }
