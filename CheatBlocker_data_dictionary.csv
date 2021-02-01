@@ -14,9 +14,10 @@ height,demographics,,text,Height (cm),,,number,130,215,,,,,,,,
 weight,demographics,,text,Weight (kilograms),,,integer,35,200,,,,,,,,
 bmi,demographics,,calc,BMI,"round(([weight]*10000)/(([height])^(2)),1)",,,,,,,,,,,,
 comments,demographics,General Comments,notes,Comments,,,,,,,,,,,,,
-duplicate_check,demographics,,yesno,Duplicate Check (completed by study staff),,,,,,,,,,,,, @HIDDEN-SURVEY
-failed_criteria,demographics,,text,Failed Criteria (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
-duplicate_record_ids,demographics,,text,Duplicate Record IDs (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
+duplicate_check,demographics,,yesno,"Duplicate Check (When 'Automatic Duplicate Check' is selected, this field is completed by the module. When 'Automatic Duplicate Check' is not selected, this field is completed by study staff)",,,,,,,,,,,,, @HIDDEN-SURVEY
 pot_duplicate_record_ids,demographics,,text,Potential Duplicate Record IDs (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
+potential_failed_criteria,demographics,,text,Potential Failed Criteria (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
+duplicate_record_ids,demographics,,text,Duplicate Record IDs (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
+failed_criteria,demographics,,text,Failed Criteria (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
 duplicates_count,demographics,,text,Duplicates Count (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
 data_entry_time,demographics,,text,Data Entry Time (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
