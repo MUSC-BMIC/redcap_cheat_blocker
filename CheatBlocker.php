@@ -83,11 +83,58 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
   }
 
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
-    $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    $duplicate_check_yn = $this->run_duplicate_check_for_selected_instrument_and_event($record, $event_id, $instrument);
+    if($duplicate_check_yn){
+      $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    }
   }
 
-   function redcap_survey_page_top($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
-    $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+  function redcap_survey_page_top($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
+    $duplicate_check_yn = $this->run_duplicate_check_for_selected_instrument_and_event($record, $event_id, $instrument);
+    if($duplicate_check_yn){
+      $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    }
+  }
+
+  function run_duplicate_check_for_selected_instrument_and_event($record, $event_id, $instrument){
+
+    $data = REDCap::getData('array', $record);
+    $record_data = $data[$record][$event_id];
+    $instrument_yn = false; $event_yn = false;
+
+    //Check for specific instrument name
+    //Find the instrument that has the duplicate_check variable
+    //Return true if the current instrument has the variable
+    $instrument_names = REDCap::getInstrumentNames();
+
+    foreach ($instrument_names as $instrument_name=>$instrument_label){
+      $instrument_fields = REDCap::getFieldNames($instrument_name);
+      foreach ($instrument_fields as $field_name=>$field_label){
+        if($field_label == 'duplicate_check' && $instrument == $instrument_name){
+          $instrument_yn = true;
+        }
+      }
+    }
+
+    //Check for specific event name
+    //If events are NOT specified (which means its not a longitudinal project), no checks are required
+    //If there are events, then run the duplicate check for only the baseline event
+
+    if (!REDCap::isLongitudinal()){
+      $event_yn = true;
+    }
+    $events = REDCap::getEventNames(false, true);
+    $first_event_id = array_shift(array_keys($events));//Get the first event which is the baseline event
+    if($event_id == $first_event_id){
+      $event_yn = true;
+    }
+
+    if($instrument_yn && $event_yn){
+      return true;
+    }
+
+    return false;
+
   }
 
   function check_for_duplicates($params) {
