@@ -22,8 +22,6 @@ setTimeout(function() {
           duplicates_count = data.duplicates_count;
           data_entry_time = data.data_entry_time;
 
-          console.log(data);
-
           if(automatic_duplicate_check == false){
             $message = eligibility_message ? cheatBlockerSettings['eligibility_message'] : potential_duplicate_message ? cheatBlockerSettings['potential_duplicate_message'] : is_duplicate ? cheatBlockerSettings['rejected'] : cheatBlockerSettings['accepted'];
           }
