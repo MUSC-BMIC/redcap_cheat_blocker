@@ -145,7 +145,6 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     $is_duplicate = $params['duplicate_check']['value'];
     $current_record_data_entry_time = date('m/d/Y H:i:s', $_SERVER['REQUEST_TIME']);
 
-
     $duplicate_array = $this->duplicate_check_by_iteration($params, $criteria_names);
 
     //Different scenarios if automatic duplicate check is not set

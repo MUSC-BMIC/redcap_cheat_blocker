@@ -32,15 +32,14 @@ setTimeout(function() {
           $("#cheat-blocker-modal .modal-body").html($message);
           $('#cheat-blocker-modal').modal('show');
 
-
-          $("#duplicate_check-tr .data :input").val(is_duplicate);
-          $("#pot_duplicate_record_ids-tr .data :input").val(potential_duplicate_record_ids);
-          $("#potential_failed_criteria-tr .data :input").val(potential_failed_criteria);
-          $("#duplicate_record_ids-tr .data :input").val(duplicate_record_ids);
-          $("#failed_criteria-tr .data :input").val(failed_criteria);
-          $("#duplicates_count-tr .data :input").val(duplicates_count);
+          $("#duplicate_check-tr :input").val(is_duplicate);
+          $("#pot_duplicate_record_ids-tr :input").val(potential_duplicate_record_ids);
+          $("#potential_failed_criteria-tr :input").val(potential_failed_criteria);
+          $("#duplicate_record_ids-tr :input").val(duplicate_record_ids);
+          $("#failed_criteria-tr :input").val(failed_criteria);
+          $("#duplicates_count-tr :input").val(duplicates_count);
           if(data_entry_time){
-            $("#data_entry_time-tr .data :input").val(data_entry_time);
+            $("#data_entry_time-tr :input").val(data_entry_time);
           }
 
 
