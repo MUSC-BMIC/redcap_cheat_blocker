@@ -19,7 +19,7 @@
           "institution": "Medical University of South Carolina"
       }
   ],
-  "no-auth-pages": ["identify_duplicates"],
+  "no-auth-pages": ["download_cheatBlocker"],
   "permissions": [
     "redcap_every_page_top",
     "redcap_data_entry_form_top",
@@ -30,7 +30,7 @@
       {
         "name": "Cheat Blocker Data Dictionary",
         "icon": "report",
-        "url": "download_cheatBlocker.php"
+        "url": "download_cheatBlocker.php?NOAUTH"
       }
     ]
   },
