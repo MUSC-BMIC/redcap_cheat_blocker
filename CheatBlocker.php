@@ -70,7 +70,7 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
 
     $cbs = array(
-      'url' => $this->getUrl('identify_duplicates.php', false, true),
+      'url' => $this->getUrl('identify_duplicates.php', true, true),
       'accepted' => $config['accepted']['value'],
       'rejected' => $config['rejected']['value'],
       'eligibility_message' => $config['eligibility_message']['value'],
