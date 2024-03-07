@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log("in here");
     var $modal = $('#external-modules-configure-modal');
 
     $modal.on('DOMSubtreeModified', function (e) {
