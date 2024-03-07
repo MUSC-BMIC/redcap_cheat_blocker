@@ -1,6 +1,7 @@
 {
  "name": "CheatBlocker",
  "namespace": "MUSC\\CheatBlocker",
+ "framework-version": 13,
  "description": "This module is used to identify “cheaters” or “gamers” and prevents individuals from completing a study screener multiple times to gain study entrance.  It can be used in two ways:  1) at the point of screening to automatically inform potential participants that they are ineligible for the study, or 2) to flag a record as a potential duplicate and then allow study staff to make the final decision to include or exclude the record.",
  "authors": [
      {
@@ -20,11 +21,6 @@
       }
   ],
   "no-auth-pages": ["identify_duplicates", "download_cheatBlocker"],
-  "permissions": [
-    "redcap_every_page_top",
-    "redcap_data_entry_form_top",
-    "redcap_survey_page_top"
-  ],
   "links": {
     "project": [
       {

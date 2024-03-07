@@ -50,7 +50,7 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     }
 
     $config = $this->getProjectSettings();
-    $modal_title = $config['modal_title']['value'];
+    $modal_title = $config['modal_title'];
 
     echo "
       <div id='cheat-blocker-modal' class='modal fade' role='dialog' data-backdrop='static'>
@@ -71,10 +71,10 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
     $cbs = array(
       'url' => $this->getUrl('identify_duplicates.php', true, true),
-      'accepted' => $config['accepted']['value'],
-      'rejected' => $config['rejected']['value'],
-      'eligibility_message' => $config['eligibility_message']['value'],
-      'potential_duplicate_message' => $config['potential_duplicate_message']['value']
+      'accepted' => $config['accepted'],
+      'rejected' => $config['rejected'],
+      'eligibility_message' => $config['eligibility_message'],
+      'potential_duplicate_message' => $config['potential_duplicate_message']
     );
 
     $this->setJsSettings('cheatBlockerSettings', $cbs);
@@ -122,11 +122,12 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
     if (!REDCap::isLongitudinal()){
       $event_yn = true;
-    }
-    $events = REDCap::getEventNames(false, true);
-    $first_event_id = array_shift(array_keys($events));//Get the first event which is the baseline event
-    if($event_id == $first_event_id){
-      $event_yn = true;
+    } else {
+      $events = REDCap::getEventNames(false, true);
+      $first_event_id = array_shift(array_keys($events));//Get the first event which is the baseline event
+      if($event_id == $first_event_id){
+        $event_yn = true;
+      }
     }
 
     if($instrument_yn && $event_yn){
@@ -139,10 +140,10 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
   function check_for_duplicates($params) {
     $config = $this->getProjectSettings();
-    $criteria_names = $config['criteria_name']['value'];
-    $automatic_duplicate_check = $config['automatic_duplicate_check']['value'];
+    $criteria_names = $config['criteria_name'];
+    $automatic_duplicate_check = $config['automatic_duplicate_check'];
 
-    $is_duplicate = $params['duplicate_check']['value'];
+    $is_duplicate = $params['duplicate_check'];
     $current_record_data_entry_time = date('m/d/Y H:i:s', $_SERVER['REQUEST_TIME']);
 
     $duplicate_array = $this->duplicate_check_by_iteration($params, $criteria_names);
@@ -153,23 +154,23 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
         //Show eligibility message when a new record comes in
         //Update Potential Duplicate Record IDs and Potential Failed Criteria fields if its a duplicate
       if($is_duplicate == ''){
-        return array(is_duplicate => '', automatic_duplicate_check => false, cheat_eligibility_message => true, data_entry_time => $current_record_data_entry_time,
-                    potential_duplicate_record_ids => $duplicate_array["duplicate_record_ids"], potential_failed_criteria => $duplicate_array["failed_criteria"]);
+        return array("is_duplicate" => '', "automatic_duplicate_check" => false, "cheat_eligibility_message" => true, "data_entry_time" => $current_record_data_entry_time,
+                    "potential_duplicate_record_ids" => $duplicate_array["duplicate_record_ids"], "potential_failed_criteria" => $duplicate_array["failed_criteria"]);
       }
 
       //If the admin marks as not a duplicate, but if the record is a potential duplicate, potential duplicate message shows up
       if($is_duplicate == 0 && $duplicate_array["is_duplicate"] == 1){
-        return array(is_duplicate => 0, automatic_duplicate_check => false, potential_duplicate_message => true,
-                    potential_duplicate_record_ids => $duplicate_array["duplicate_record_ids"], potential_failed_criteria => $duplicate_array["failed_criteria"]);
+        return array("is_duplicate" => 0, "automatic_duplicate_check" => false, "potential_duplicate_message" => true,
+                    "potential_duplicate_record_ids" => $duplicate_array["duplicate_record_ids"], "potential_failed_criteria" => $duplicate_array["failed_criteria"]);
       }
       else{
-        return array(is_duplicate => (int)$is_duplicate, automatic_duplicate_check => false, duplicate_record_ids => $duplicate_array["duplicate_record_ids"],
-                    failed_criteria => $duplicate_array["failed_criteria"], duplicates_count => $duplicate_array["duplicates_count"]);
+        return array("is_duplicate" => (int)$is_duplicate, "automatic_duplicate_check" => false, "duplicate_record_ids" => $duplicate_array["duplicate_record_ids"],
+                    "failed_criteria" => $duplicate_array["failed_criteria"], "duplicates_count" => $duplicate_array["duplicates_count"]);
       }
 
     }
 
-    return array(is_duplicate => $duplicate_array["is_duplicate"], failed_criteria => $duplicate_array["failed_criteria"], duplicates_count => $duplicate_array["duplicates_count"], duplicate_record_ids => $duplicate_array["duplicate_record_ids"], data_entry_time => $duplicate_array["data_entry_time"]);
+    return array("is_duplicate" => $duplicate_array["is_duplicate"], "failed_criteria" => $duplicate_array["failed_criteria"], "duplicates_count" => $duplicate_array["duplicates_count"], "duplicate_record_ids" => $duplicate_array["duplicate_record_ids"], "data_entry_time" => $duplicate_array["data_entry_time"]);
   }
 
   protected function duplicate_check_by_iteration($params, $criteria_names){
@@ -251,16 +252,16 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     }
 
     if($duplicate_exists){
-      return array(is_duplicate => (int)$duplicate_exists, failed_criteria => $failed_criteria_exists, duplicates_count => $duplicates_count, duplicate_record_ids => $duplicate_record_ids, data_entry_time => $current_record_data_entry_time);
+      return array("is_duplicate" => (int)$duplicate_exists, "failed_criteria" => $failed_criteria_exists, "duplicates_count" => $duplicates_count, "duplicate_record_ids" => $duplicate_record_ids, "data_entry_time" => $current_record_data_entry_time);
     }
 
-    return array(is_duplicate => 0, data_entry_time => $current_record_data_entry_time);
+    return array("is_duplicate" => 0, "data_entry_time" => $current_record_data_entry_time);
   }
 
   protected function get_days_from_config_file(){
     $config = $this->getProjectSettings();
-    $compare_dates_number = $config['compare_dates_number']['value'];
-    $time_period = $config['time_period']['value'];
+    $compare_dates_number = $config['compare_dates_number'];
+    $time_period = $config['time_period'];
 
     if(is_null($compare_dates_number) || is_null($time_period)){
       return 100 * 365; //100 years which is a random number
