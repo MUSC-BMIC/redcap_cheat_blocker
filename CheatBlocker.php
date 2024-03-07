@@ -50,7 +50,7 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
     }
 
     $config = $this->getProjectSettings();
-    $modal_title = $config['modal_title']['value'];
+    $modal_title = $config['modal_title'];
 
     echo "
       <div id='cheat-blocker-modal' class='modal fade' role='dialog' data-backdrop='static'>
@@ -71,10 +71,10 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
     $cbs = array(
       'url' => $this->getUrl('identify_duplicates.php', true, true),
-      'accepted' => $config['accepted']['value'],
-      'rejected' => $config['rejected']['value'],
-      'eligibility_message' => $config['eligibility_message']['value'],
-      'potential_duplicate_message' => $config['potential_duplicate_message']['value']
+      'accepted' => $config['accepted'],
+      'rejected' => $config['rejected'],
+      'eligibility_message' => $config['eligibility_message'],
+      'potential_duplicate_message' => $config['potential_duplicate_message']
     );
 
     $this->setJsSettings('cheatBlockerSettings', $cbs);
@@ -139,10 +139,10 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
   function check_for_duplicates($params) {
     $config = $this->getProjectSettings();
-    $criteria_names = $config['criteria_name']['value'];
-    $automatic_duplicate_check = $config['automatic_duplicate_check']['value'];
+    $criteria_names = $config['criteria_name'];
+    $automatic_duplicate_check = $config['automatic_duplicate_check'];
 
-    $is_duplicate = $params['duplicate_check']['value'];
+    $is_duplicate = $params['duplicate_check'];
     $current_record_data_entry_time = date('m/d/Y H:i:s', $_SERVER['REQUEST_TIME']);
 
     $duplicate_array = $this->duplicate_check_by_iteration($params, $criteria_names);
@@ -259,8 +259,8 @@ class CheatBlocker extends \ExternalModules\AbstractExternalModule {
 
   protected function get_days_from_config_file(){
     $config = $this->getProjectSettings();
-    $compare_dates_number = $config['compare_dates_number']['value'];
-    $time_period = $config['time_period']['value'];
+    $compare_dates_number = $config['compare_dates_number'];
+    $time_period = $config['time_period'];
 
     if(is_null($compare_dates_number) || is_null($time_period)){
       return 100 * 365; //100 years which is a random number
