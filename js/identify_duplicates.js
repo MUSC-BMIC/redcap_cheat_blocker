@@ -15,7 +15,6 @@ function identifyDuplicates(e) {
     async: false,
     data: $form_data,
     success: function(data) {
-      data = JSON.parse(data);
       is_duplicate = data.is_duplicate;
       automatic_duplicate_check = data.automatic_duplicate_check;
       eligibility_message = data.cheat_eligibility_message;
